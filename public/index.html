@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>简易聊天室</title>
+    <script src="https://cdn.bootcss.com/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+    <script type="text/javascript" src="reply.js"></script>
+    
     <style type="text/css">
 
         @media screen and (min-width: 320px) and (max-width: 1156px){
@@ -113,6 +116,8 @@
         var TalkWords;
         var TalkSub;
         var xhr;
+        var ContextShower;
+        var context = "blank";
 
         function InputPress() {
             if (event.keyCode == 13) {
@@ -132,86 +137,29 @@
 
             // 将之前的内容与要发的内容拼接好 提交
             Words.innerHTML = Words.innerHTML + str;
-
-            // toChat2("10000000051", "inner", TalkWords.value , "wx", "", "oXFEUwvf_exNy6VLr9nGrxrvAPxQ");
             reply(TalkWords.value);
-
-            
-            
         }
 
-        function get_replay(word){
-            return "I am replaying for "+word;
-        }
+        
 
         function reply(word){
-            var textReply = get_replay(word);
+            
+            var textReply = get_reply(word, context);
+            context = get_new_context();
+            ContextShower.innerText = "当前context:" + context;
             str = '<div class="atalk"><span>' + textReply +'</span></div>';
             Words.innerHTML = Words.innerHTML + str;
             TalkWords.value = "";
             Words.scrollTop = Words.scrollHeight;
-
         }
 
-        // function toChat2(enterpriseID,platform, query, source,userStatus,username){
-        //     var url = "http://10.0.30.15:8092/SmartServer/robot/chat";
-        //     xhr.onreadystatechange = toPostProcess;
-        //     xhr.open("post", url, true);
-        //     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        //     xhr.send(JSON.stringify({
-        //         "enterpriseID": enterpriseID,
-        //         "platform": platform,
-        //         "query": query,
-        //         "source": source,
-        //         "userStatus": userStatus,
-        //         "username": username
-        //     }));
-        //     console.log("ok");
-        // }
-
-        // function toPostProcess() {/*设置当获XHR对象获取到返回信息后执行以下代码*/
-        //     if (xhr.readyState === 4) {
-        //         if (xhr.status === 200) {
-        //             res = xhr.responseText;
-        //             var obj = eval ("(" + res + ")");
-        //             console.log("res ok:" +res);
-        //             try {
-        //                 var textReply = obj.result.content;
-        //                 str = '<div class="atalk"><span>' + textReply +'</span></div>';
-        //                 // 将之前的内容与要发的内容拼接好 提交
-        //                 Words.innerHTML = Words.innerHTML + str;
-
-        //                 // 置空
-        //                 TalkWords.value = "";
-        //                 // 滑动到最底部
-        //                 Words.scrollTop = Words.scrollHeight;
-        //             } catch (e) {
-        //                 TalkWords.value = "";
-        //             }
-        //         } else {
-        //             console.log("可能存在跨域问题，解决即可");
-        //         }
-        //     }
-        // }
-
-        function GetXmlHttpObject() {
-            var xmlHttp=null;
-            try {
-                // Firefox, Opera 8.0+, Safari
-                console.log("XMLHttpRequest");
-                xmlHttp=new XMLHttpRequest();
-            } catch (e) {
-                // Internet Explorer
-                try {
-                    console.log("Msxml2");
-                    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-                } catch (e) {
-                    console.log("Microsoft");
-                    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
-                }
-            }
-            return xmlHttp;
+        function set_context(){
+            context = TalkWords.value;
+            TalkWords.value = "";
+            console.log("set context", context);
+            ContextShower.innerText = "当前context: " + context;
         }
+
 
 
         //is moblie
@@ -230,11 +178,13 @@
         window.onload = function(){
             Words = document.getElementById("words");
             TalkWords = document.getElementById("talkwords");
-            TalkSub = document.getElementById("talksub");
-            xhr = new GetXmlHttpObject();
-            TalkSub.onclick = function(){
-                chatRoom();
-            }
+            TalkSub = document.getElementById("send_button");
+            ContextShower = document.getElementById("showing_current_context");
+
+            // xhr = new GetXmlHttpObject();
+            // TalkSub.onclick = function(){
+            //     chatRoom();
+            // }
             //is mobile
             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
                 console.log("手机");
@@ -260,12 +210,19 @@
     </div>
     <div class="talk_input"  id="talk_input_id">
         <input type="text" class="talk_word" id="talkwords" onkeypress="InputPress()">
-        <input type="button" value="send" class="talk_sub" id="talksub" >
-        <input type="button" value="context" class="talk_sub" id="set_context" >
+        <input type="button" value="send" class="talk_sub" id="send_button" onclick="chatRoom()">
+        <input type="button" value="context" class="talk_sub" id="set_context_button" onclick="set_context()">
     </div>
+    <div id = "showing_current_context">当前context: 空</p>
 </div>
 
+<!-- <script>
+    document.getElementById("send_button").onclick = function(){
+        InputPress();
+    }
+</script> -->
 
+<!-- 
 创建画布
 <canvas id="starfield"></canvas>
 绘制星星
@@ -324,7 +281,7 @@
             drawStars();
         }, 50);
     }
-</script>
+</script> -->
 
 </body>
 </html>
