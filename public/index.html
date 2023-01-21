@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>简易聊天室</title>
+    <title>2023原样闯关</title>
     <script src="https://cdn.bootcss.com/crypto-js/3.1.9-1/crypto-js.min.js"></script>
     <script type="text/javascript" src="reply.js"></script>
     
@@ -117,7 +117,7 @@
         var TalkSub;
         var xhr;
         var ContextShower;
-        var context = "blank";
+        var cur_context = "blank";
 
         function InputPress() {
             if (event.keyCode == 13) {
@@ -144,9 +144,9 @@
 
         function reply(word){
             
-            var textReply = get_reply(word, context);
-            context = get_new_context();
-            ContextShower.innerText = "当前context:" + context;
+            var textReply = get_reply(word, cur_context);
+            cur_context = get_new_context();
+            ContextShower.innerText = "当前context:" + cur_context;
             str = '<div class="atalk"><span>' + textReply +'</span></div>';
             Words.innerHTML = Words.innerHTML + str;
             TalkWords.value = "";
@@ -154,10 +154,10 @@
         }
 
         function set_context(){
-            context = TalkWords.value;
+            cur_context = TalkWords.value;
             TalkWords.value = "";
-            console.log("set context", context);
-            ContextShower.innerText = "当前context: " + context;
+            console.log("set context", cur_context);
+            ContextShower.innerText = "当前context: " + cur_context;
         }
 
 
@@ -205,7 +205,7 @@
 <body>
 <div class="talk_con" id="talk_con_id">
     <div class="talk_show" id="words">
-        <div class="atalk"><span id="asay">欢迎进入模拟客户聊天</span></div>
+        <div class="atalk"><span id="asay">【重要操作指引】<br>请在叨科学公众号2023-01-21的推文中，找到一串以in8g开头，m1pf结尾的字符串。把它输入到下方文本框中，点击context。这样才能开始本部分的闯关。<br>另外，context会在闯关过程中自动更新。如果您中途退出，请记录输入框下方的context, 并在重新进入时输入，并点击context键。<br>重要提示：context本身是随机生成的，目的只是为了防止抢跑和避免跳关，在任何谜题的解答中都不应当参考。在你尝试解答迷题时，只需要输入答案到文本框中，然后点击send按钮。</span></div>
         <!--- div class="btalk"><span id="bsay">用户说：还没呢，你呢？</span></div --->
     </div>
     <div class="talk_input"  id="talk_input_id">
@@ -222,7 +222,6 @@
     }
 </script> -->
 
-<!-- 
 创建画布
 <canvas id="starfield"></canvas>
 绘制星星
@@ -281,7 +280,7 @@
             drawStars();
         }, 50);
     }
-</script> -->
+</script> 
 
 </body>
 </html>
