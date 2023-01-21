@@ -145,9 +145,14 @@
         function reply(word){
             
             var textReply = get_reply(word, cur_context);
-            cur_context = get_new_context();
-            ContextShower.innerText = "当前context:" + cur_context;
-            str = '<div class="atalk"><span>' + textReply +'</span></div>';
+            if(textReply.substring(0,2) == "ok"){
+                cur_context = get_new_context();
+                ContextShower.innerText = "当前context:" + cur_context;
+                str = '<div class="atalk"><span>' + textReply.slice(2) +'</span></div>';
+            }else{
+                str = '<div class="atalk"><span>' + textReply +'</span></div>';
+            }
+            
             Words.innerHTML = Words.innerHTML + str;
             TalkWords.value = "";
             Words.scrollTop = Words.scrollHeight;

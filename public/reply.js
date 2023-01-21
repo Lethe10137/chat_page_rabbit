@@ -83,6 +83,7 @@ function get_reply(word, context){
     console.log(Date.now() - last_action)
     if(Date.now() - last_action < 500){
         last_action = Date.now()
+        
         return "操作过于频繁"
     }
     last_action = Date.now()
@@ -93,13 +94,14 @@ function get_reply(word, context){
 
     var message_id = get_message_id_from_context(context);
     console.log("message",message_id);
-    if(message_id > 0){
+    if(message_id > 0 && word != "我要乘坐原样号列车前往其他都洞口"){
         data = decode(encoded[message_id -1 ], context + word);
         if(data){
             new_context = data.next_context
             console.log(data.id)
-            return data.text
+            return "ok"+data.text
         }else{
+           
             return "再试试别的答案吧！";
         }
     }else{
@@ -110,8 +112,10 @@ function get_reply(word, context){
             }
             var index =time % 5;
             console.log(index);
+           
             return train[index];
         }else{
+          
             return initial_hint;
         }
     }
@@ -119,6 +123,7 @@ function get_reply(word, context){
 }
 
 function get_new_context(){
+    console.log(new_context);
     return new_context;
 }
 
