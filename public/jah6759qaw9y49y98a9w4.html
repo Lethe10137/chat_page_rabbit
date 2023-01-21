@@ -159,11 +159,13 @@
     <button id="submit">
         设定/重置
     </button>
-</div>
+
 
 <div id="output">
     <p id="hint"></p>
     <p id="output_area"></p>
+</div>
+
 </div>
 
 <script>
@@ -172,6 +174,7 @@
     }
 
     $$("submit").onclick = function () {
+        console.log("click");
 
         if (!$$("rotor_poi_1").value) {
             $$("rotor_poi_1").value = 0;
@@ -271,18 +274,23 @@
 
     function check() {
         if (!check_one($$("rotor1").value, rotor1, rotor1_reverse)) {
+            console.log("rotor1");
             return false;
         }
         if (!check_one($$("rotor2").value, rotor2, rotor2_reverse)) {
+            console.log("rotor2");
             return false;
         }
         if (!check_one($$("rotor3").value, rotor3, rotor3_reverse)) {
+            console.log("rotor3");
             return false;
         }
         if (!check_one($$("reflactor").value, reflactor, new Array(26))) {
+            console.log("reflactor");
             return false;
         }
         if (!check_board($$("board").value, board)) {
+            console.log("board");
             return false;
         }
         return true;
